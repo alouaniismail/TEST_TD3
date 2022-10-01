@@ -1,0 +1,29 @@
+
+recette: test $(DIRBUILD)
+	for tstr in $(TR); do java -ea -cp build/ $$tstr; done
+
+utest: test $(DIRBUILD)
+	for tstu in $(TU); do java -ea -cp build/ $$tstu; done
+	
+	
+IMPORTANT:
+le -d avec le package tec au debut cree le folder tec au sein de build ; ainsi on peut prenommer les tests de la facon suivante: tec.TestPosition, tec.TestAutobus, etc.. 
+Et dans le Makefile, pour executer apres avoir nommer DIRBUILD=build, on fera pour les tests unitaires par exemple(les tests qu'on fait jusqu'à là):
+	utest: test (qui nécessite make source avant) $(DIRBUILD)
+		for testu in $(TR) (avec TR=tec.Autobus et tec.PassagerStandard); do \
+			java -ea -cp build/ $$tstu; done
+cad. le build qui contient tec dorénavent est interprete comme un saut via $(DIRBUILD) et via:
+une boucle sur tous les testu dans $(TR) issues de build/tec ($(BUILD)) de la forme tec.LE_TEST_EN_QUESTION puis faire: java -ea -cp build/ (les dépendances en profondeur dans le répertoire build) ainsi que $$tstu pour spécifier la sémantique du fichier à tester.
+VOILA.
+A APPRENDRE ET A RETENIR PAR COEUR.
+LES TRUCS DU MAKEFILE SONT FONDAMENTAUX.
+
+Pour effectuer le dernier test comme en C(), on fera:
+make source
+(tous les .class des fichiers sources sont dans le folder : build)
+APRES:
+javac -d build -cp build Simple.java
+puis:
+java -ea -cp build Simple (pour déterminer les 2 chemins PRINCIPAUX)
+VOILA.
+FIN DU TD3.(TD4)
